@@ -7,21 +7,16 @@ export default function BookDetails() {
   const [book, setBook] = useState(null);
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/books/${id}`)
+    fetch(`http://localhost:8000/api/books/${id}`)
       .then(r => r.json())
-      .then(d => {
-        if (d.success) setBook(d.data);
-        else setBook(null);
-      })
-      .catch(() => setBook(null));
+      .then(d => setBook(d.data));
   }, [id]);
 
   if (!book) return <p>Loading...</p>;
 
   const handleDelete = () => {
-    fetch(`http://localhost:5000/api/books/${id}`, { method: "DELETE" })
-      .then(() => nav("/books?refresh=true"))
-      .catch(console.error);
+    fetch(`http://localhost:8000/api/books/${id}`, { method: "DELETE" })
+      .then(() => nav("/"));
   };
 
   return (
@@ -32,7 +27,7 @@ export default function BookDetails() {
       <p><strong>Available:</strong> {book.available ? "Yes" : "No"}</p>
       <div className="mt-3">
         <button onClick={handleDelete} className="btn btn-danger me-2">Delete</button>
-        <button onClick={() => nav("/books")} className="btn btn-secondary">Back</button>
+        <button onClick={() => nav("/")} className="btn btn-secondary">Back</button>
       </div>
     </div>
   );

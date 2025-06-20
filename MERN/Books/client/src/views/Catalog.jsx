@@ -1,34 +1,18 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 export default function Catalog() {
   const [books, setBooks] = useState([]);
-  const location = useLocation();
 
-  const fetchBooks = () => {
-    fetch("http://localhost:5000/api/books")
+  useEffect(() => {
+    fetch("http://localhost:8000/api/books")
       .then(r => r.json())
-      .then(data => {
-        if (data.success) setBooks(data.data);
-      })
-      .catch(console.error);
-  };
-
-  useEffect(() => {
-    fetchBooks();
+      .then(data => setBooks(data.data));
   }, []);
-
-  useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    if (params.get("refresh") === "true") {
-      fetchBooks();
-    }
-  }, [location.search]);
 
   return (
     <>
       <h2>Book Catalog</h2>
-     
       <table className="table table-striped">
         <thead className="table-dark">
           <tr>
